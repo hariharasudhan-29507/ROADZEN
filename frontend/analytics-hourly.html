@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RoadZen Hourly Analytics</title>
+  <meta name="description" content="Hourly severity analytics for RoadZen.">
+  <link rel="stylesheet" href="/static/roadzen.css">
+</head>
+<body data-page="analytics-hourly" data-theme="light">
+  <div class="shell">
+    <div class="noise"></div>
+    <nav class="nav"></nav>
+    <section class="page-hero">
+      <div class="page-frame">
+        <div class="eyebrow reveal-text">Hourly analytics</div>
+        <div class="page-title reveal-text">Track how severity climbs and falls through the day.</div>
+        <div class="page-copy reveal-text">Plotly is used here for a continuous, readable time-profile with hoverable values.</div>
+      </div>
+    </section>
+    <section class="section section-tight">
+      <div class="page-frame analytics-board">
+        <div class="chart-stage">
+          <div class="chart-kicker">Plotly line area</div>
+          <div class="analytics-title" id="analytics-title">Loading hourly profile</div>
+          <div class="chart-description" id="analytics-copy">Preparing time-based severity comparisons.</div>
+          <div class="chart-metrics">
+            <span class="library-pill">Plotly</span>
+            <span class="mini-pill" id="analytics-pill-a">24-hour scan</span>
+            <span class="mini-pill" id="analytics-pill-b">Severity trend</span>
+          </div>
+          <div id="plotly-chart" class="chart-canvas-wrap"></div>
+        </div>
+        <div class="table-shell data-table-shell">
+          <div class="chart-title">Hourly table</div>
+          <table>
+            <thead>
+              <tr><th>Hour</th><th>Average severity</th><th>Incidents</th></tr>
+            </thead>
+            <tbody id="analytics-table-body"></tbody>
+          </table>
+        </div>
+        <div class="small-copy is-hidden" id="analytics-error"></div>
+      </div>
+    </section>
+    <footer class="footer"><div class="footer-inner"><div>Use this view when timing is the strongest factor.</div><div><a href="/dashboard">Back to analytics hub</a></div></div></footer>
+  </div>
+  <script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="/static/supabase-client.js"></script>
+  <script src="/static/roadzen.js"></script>
+</body>
+</html>

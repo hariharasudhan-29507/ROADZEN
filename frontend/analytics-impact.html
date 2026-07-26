@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RoadZen Model Impact</title>
+  <meta name="description" content="Feature importance analytics for RoadZen.">
+  <link rel="stylesheet" href="/static/roadzen.css">
+</head>
+<body data-page="analytics-impact" data-theme="light">
+  <div class="shell">
+    <div class="noise"></div>
+    <nav class="nav"></nav>
+    <section class="page-hero">
+      <div class="page-frame">
+        <div class="eyebrow reveal-text">Model impact</div>
+        <div class="page-title reveal-text">See which features influence the model most strongly.</div>
+        <div class="page-copy reveal-text">ECharts bar is used here to keep feature ranking compact, legible, and easy to compare.</div>
+      </div>
+    </section>
+    <section class="section section-tight">
+      <div class="page-frame analytics-board">
+        <div class="chart-stage">
+          <div class="chart-kicker">ECharts ranked bars</div>
+          <div class="analytics-title" id="analytics-title">Loading feature importance</div>
+          <div class="chart-description" id="analytics-copy">Preparing model driver comparisons.</div>
+          <div class="chart-metrics">
+            <span class="library-pill">ECharts</span>
+            <span class="mini-pill" id="analytics-pill-a">Feature ranking</span>
+            <span class="mini-pill" id="analytics-pill-b">Model explanation</span>
+          </div>
+          <div id="analytics-chart" class="chart-canvas-wrap"></div>
+        </div>
+        <div class="table-shell data-table-shell">
+          <div class="chart-title">Feature table</div>
+          <table>
+            <thead>
+              <tr><th>Feature</th><th>Importance</th></tr>
+            </thead>
+            <tbody id="analytics-table-body"></tbody>
+          </table>
+        </div>
+        <div class="small-copy is-hidden" id="analytics-error"></div>
+      </div>
+    </section>
+    <footer class="footer"><div class="footer-inner"><div>Use this view when you need to explain why the model leans the way it does.</div><div><a href="/dashboard">Back to analytics hub</a></div></div></footer>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="/static/supabase-client.js"></script>
+  <script src="/static/roadzen.js"></script>
+</body>
+</html>
