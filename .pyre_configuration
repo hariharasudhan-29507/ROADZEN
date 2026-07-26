@@ -1,0 +1,21 @@
+{
+  "site_package_search_strategy": "all",
+  "search_path": [
+    ".",
+    "backend",
+    "C:/Python313/Lib/site-packages"
+  ],
+  "python_version": "3.13",
+  "python_path": "C:/Python313/python.exe",
+  "source_directories": [
+    {
+      "root": "."
+    },
+    {
+      "root": "backend"
+    }
+  ],
+  "exclude": [
+    ".*/.*/.*"
+  ]
+}

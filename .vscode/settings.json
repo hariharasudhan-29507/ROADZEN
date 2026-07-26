@@ -1,0 +1,20 @@
+{
+    "python.defaultInterpreterPath": "C:\\Python313\\python.exe",
+    "python.analysis.extraPaths": [
+        "C:\\Python313\\Lib\\site-packages",
+        "C:\\Python313\\Lib",
+        "${workspaceFolder}\\backend"
+    ],
+    "python.analysis.typeCheckingMode": "basic",
+    "python.analysis.useLibraryCodeForTypes": true,
+    "python.analysis.diagnosticSeverityOverrides": {
+        "reportMissingImports": "none",
+        "reportMissingModuleSource": "none"
+    },
+    "python.analysis.autoSearchPaths": true,
+    "python.analysis.include": [
+        "backend",
+        "*.py"
+    ],
+    "python.pythonPath": "C:\\Python313\\python.exe"
+}
