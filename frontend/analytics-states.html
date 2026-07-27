@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RoadZen State Analytics</title>
+  <meta name="description" content="State accident and casualty analytics for RoadZen.">
+  <link rel="stylesheet" href="/static/roadzen.css">
+</head>
+<body data-page="analytics-states" data-theme="light">
+  <div class="shell">
+    <div class="noise"></div>
+    <nav class="nav"></nav>
+    <section class="page-hero">
+      <div class="page-frame">
+        <div class="eyebrow reveal-text">State analytics</div>
+        <div class="page-title reveal-text">Compare the heaviest state-level accident load.</div>
+        <div class="page-copy reveal-text">ApexCharts is used here for ranked comparison and clean cross-state reading.</div>
+      </div>
+    </section>
+    <section class="section section-tight">
+      <div class="page-frame analytics-board">
+        <div class="chart-stage">
+          <div class="chart-kicker">ApexCharts horizontal bar</div>
+          <div class="analytics-title" id="analytics-title">Loading state trends</div>
+          <div class="chart-description" id="analytics-copy">Preparing state comparisons.</div>
+          <div class="chart-metrics">
+            <span class="library-pill">ApexCharts</span>
+            <span class="mini-pill" id="analytics-pill-a">State summaries</span>
+            <span class="mini-pill" id="analytics-pill-b">Accidents and losses</span>
+          </div>
+          <div id="analytics-chart" class="chart-canvas-wrap"></div>
+        </div>
+        <div class="table-shell data-table-shell">
+          <div class="chart-title">State table</div>
+          <table>
+            <thead>
+              <tr><th>State</th><th>Accidents</th><th>Fatalities</th><th>Injuries</th><th>Risk</th></tr>
+            </thead>
+            <tbody id="analytics-table-body"></tbody>
+          </table>
+        </div>
+        <div class="small-copy is-hidden" id="analytics-error"></div>
+      </div>
+    </section>
+    <footer class="footer"><div class="footer-inner"><div>Use this view when you need region-by-region prioritization.</div><div><a href="/dashboard">Back to analytics hub</a></div></div></footer>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="/static/supabase-client.js"></script>
+  <script src="/static/roadzen.js"></script>
+</body>
+</html>

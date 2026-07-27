@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RoadZen Vehicle Analytics</title>
+  <meta name="description" content="Vehicle distribution analytics for RoadZen.">
+  <link rel="stylesheet" href="/static/roadzen.css">
+</head>
+<body data-page="analytics-vehicles" data-theme="light">
+  <div class="shell">
+    <div class="noise"></div>
+    <nav class="nav"></nav>
+    <section class="page-hero">
+      <div class="page-frame">
+        <div class="eyebrow reveal-text">Vehicle analytics</div>
+        <div class="page-title reveal-text">Understand which vehicle segments dominate the risk mix.</div>
+        <div class="page-copy reveal-text">Chart.js doughnut keeps the category shares easy to scan, especially across light and dark themes.</div>
+      </div>
+    </section>
+    <section class="section section-tight">
+      <div class="page-frame analytics-board">
+        <div class="chart-stage">
+          <div class="chart-kicker">Chart.js doughnut</div>
+          <div class="analytics-title" id="analytics-title">Loading vehicle mix</div>
+          <div class="chart-description" id="analytics-copy">Preparing vehicle comparisons.</div>
+          <div class="chart-metrics">
+            <span class="library-pill">Chart.js</span>
+            <span class="mini-pill" id="analytics-pill-a">Vehicle categories</span>
+            <span class="mini-pill" id="analytics-pill-b">Distribution view</span>
+          </div>
+          <div class="chart-canvas-wrap"><canvas id="analytics-chart"></canvas></div>
+        </div>
+        <div class="table-shell data-table-shell">
+          <div class="chart-title">Vehicle table</div>
+          <table>
+            <thead>
+              <tr><th>Vehicle type</th><th>Count</th><th>Average severity</th></tr>
+            </thead>
+            <tbody id="analytics-table-body"></tbody>
+          </table>
+        </div>
+        <div class="small-copy is-hidden" id="analytics-error"></div>
+      </div>
+    </section>
+    <footer class="footer"><div class="footer-inner"><div>Use this view when transport category is the main concern.</div><div><a href="/dashboard">Back to analytics hub</a></div></div></footer>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="/static/supabase-client.js"></script>
+  <script src="/static/roadzen.js"></script>
+</body>
+</html>

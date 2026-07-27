@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RoadZen Weather Analytics</title>
+  <meta name="description" content="Weather severity analytics for RoadZen.">
+  <link rel="stylesheet" href="/static/roadzen.css">
+</head>
+<body data-page="analytics-weather" data-theme="light">
+  <div class="shell">
+    <div class="noise"></div>
+    <nav class="nav"></nav>
+    <section class="page-hero">
+      <div class="page-frame">
+        <div class="eyebrow reveal-text">Weather analytics</div>
+        <div class="page-title reveal-text">See which conditions amplify road severity the fastest.</div>
+        <div class="page-copy reveal-text">ECharts radar is used here to show how each weather pattern changes severity relative to the others.</div>
+      </div>
+    </section>
+    <section class="section section-tight">
+      <div class="page-frame analytics-board">
+        <div class="chart-stage">
+          <div class="chart-kicker">ECharts radar</div>
+          <div class="analytics-title" id="analytics-title">Loading weather severity</div>
+          <div class="chart-description" id="analytics-copy">Preparing weather comparisons.</div>
+          <div class="chart-metrics">
+            <span class="library-pill">ECharts</span>
+            <span class="mini-pill" id="analytics-pill-a">Weather classes</span>
+            <span class="mini-pill" id="analytics-pill-b">Severity radar</span>
+          </div>
+          <div id="analytics-chart" class="chart-canvas-wrap"></div>
+        </div>
+        <div class="table-shell data-table-shell">
+          <div class="chart-title">Weather table</div>
+          <table>
+            <thead>
+              <tr><th>Weather</th><th>Average severity</th><th>Share</th></tr>
+            </thead>
+            <tbody id="analytics-table-body"></tbody>
+          </table>
+        </div>
+        <div class="small-copy is-hidden" id="analytics-error"></div>
+      </div>
+    </section>
+    <footer class="footer"><div class="footer-inner"><div>Use this view when route conditions matter more than geography.</div><div><a href="/dashboard">Back to analytics hub</a></div></div></footer>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="/static/supabase-client.js"></script>
+  <script src="/static/roadzen.js"></script>
+</body>
+</html>

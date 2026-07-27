@@ -1,5 +1,5 @@
 /* ========== RoadZen Frontend App ========== */
-const API = 'http://127.0.0.1:8000';
+const API = '';
 let map, heatLayer, hospitalMarkers = [], heatmapVisible = true, hospitalsVisible = true;
 
 // ========== INIT ==========
@@ -198,7 +198,7 @@ async function sendChat() {
   input.value = '';
   addChatMsg(msg, 'user');
   try {
-    const res = await fetch(`${API}/chat`, { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({message: msg}) });
+    const res = await fetch(`${API}/api/chat`, { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({message: msg}) });
     const r = await res.json();
     addChatMsg(r.reply, 'bot', r.suggestions);
   } catch(e) { addChatMsg('⚠️ Cannot connect to backend. Please ensure the server is running on port 8000.', 'bot'); }
