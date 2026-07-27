@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RoadZen Predictor</title>
+  <meta name="description" content="Run RoadZen accident severity prediction and explanation.">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/driver.js@1.3.6/dist/driver.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@iconoir/css@7.11.0/css/iconoir.css">
+  <link rel="stylesheet" href="/static/roadzen.css">
+</head>
+<body data-page="predict" data-theme="light">
+  <div class="shell">
+    <div class="noise"></div>
+    <nav class="nav">
+      <div class="nav-inner">
+        <a class="brand" href="/">
+          <span class="brand-mark">RZ</span>
+          <span class="brand-copy">RoadZen<br><small>Risk predictor</small></span>
+        </a>
+        <div class="nav-links">
+          <a class="nav-link" href="/">Home</a>
+          <a class="nav-link active" href="/predict">Predict</a>
+          <a class="nav-link" href="/chatbot">Chatbot</a>
+          <a class="nav-link" href="/dashboard">Dashboard</a>
+        </div>
+        <button class="theme-toggle" type="button" data-theme-toggle>Light mode</button>
+      </div>
+    </nav>
+
+    <section class="page-hero">
+      <div class="page-frame">
+        <div class="eyebrow reveal-text">Prediction</div>
+        <div class="page-title reveal-text">Turn a driving scenario into a clean risk readout.</div>
+        <div class="page-copy reveal-text">Check the likely severity, understand what is pushing the risk higher, and decide what to change before the trip begins.</div>
+      </div>
+    </section>
+
+    <section class="section section-tight">
+      <div class="page-frame stats-grid" style="margin-bottom:26px">
+        <div class="metric-block">
+          <div class="metric-label">Prediction quality</div>
+          <div class="metric-value" id="predict-accuracy">...</div>
+        </div>
+        <div class="metric-block">
+          <div class="metric-label">Coverage</div>
+          <div class="metric-value" id="predict-samples">...</div>
+        </div>
+        <div class="metric-block">
+          <div class="metric-label">Explanation</div>
+          <div class="metric-value">SHAP</div>
+        </div>
+        <div class="metric-block">
+          <div class="metric-label">Emergency relay</div>
+          <div class="metric-value">Ready</div>
+        </div>
+      </div>
+
+      <div class="page-frame predict-grid">
+        <div class="predict-shell">
+          <div class="predict-title">Trip inputs</div>
+          <form id="predict-form" class="predict-form">
+            <div class="predict-field">
+              <label for="inp-hour">Hour</label>
+              <input id="inp-hour" class="predict-input" type="number" min="0" max="23" value="22">
+            </div>
+            <div class="predict-field">
+              <label for="inp-age">Driver age</label>
+              <input id="inp-age" class="predict-input" type="number" min="18" max="80" value="28">
+            </div>
+            <div class="predict-field">
+              <label for="inp-engine">Engine size</label>
+              <input id="inp-engine" class="predict-input" type="number" value="1400">
+            </div>
+            <div class="predict-field">
+              <label for="inp-carage">Vehicle age</label>
+              <input id="inp-carage" class="predict-input" type="number" value="6">
+            </div>
+            <div class="predict-field">
+              <label for="inp-weather">Weather</label>
+              <select id="inp-weather" class="predict-select">
+                <option>Rain</option>
+                <option>Fog</option>
+                <option>Clear</option>
+                <option>Storm</option>
+              </select>
+            </div>
+            <div class="predict-field">
+              <label for="inp-lum">Light condition</label>
+              <select id="inp-lum" class="predict-select">
+                <option>Night</option>
+                <option>Day</option>
+                <option>Dusk</option>
+              </select>
+            </div>
+            <div class="predict-field">
+              <label for="inp-vehicle">Vehicle type</label>
+              <select id="inp-vehicle" class="predict-select">
+                <option>Car</option>
+                <option>Motorcycle</option>
+                <option>Truck</option>
+                <option>Bus</option>
+              </select>
+            </div>
+            <div class="predict-field">
+              <label for="inp-sex">Driver sex</label>
+              <select id="inp-sex" class="predict-select">
+                <option>M</option>
+                <option>F</option>
+              </select>
+            </div>
+            <div class="button-row" style="grid-column:1 / -1; margin-top:8px">
+              <button class="button button-primary" type="submit">Predict risk</button>
+              <button class="button button-ghost" id="explain-btn" type="button">Explain factors</button>
+              <button class="button button-ghost" id="alert-btn" type="button">Send emergency alert</button>
+            </div>
+          </form>
+        </div>
+
+        <div id="predict-result" class="result-shell">
+          <div class="risk-hero">
+            <div class="eyebrow">Awaiting scenario</div>
+            <strong>Run a prediction to populate this panel.</strong>
+            <div class="section-copy">RoadZen will return severity confidence and a clearer explanation here.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        <div>Use this page when you want a direct scenario check.</div>
+        <div>Use RoadZen chat afterward if you want the result explained more naturally.</div>
+      </div>
+    </footer>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.2/lib/anime.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/driver.js@1.3.6/dist/driver.js.iife.js"></script>
+  <script src="/static/supabase-client.js"></script>
+  <script src="/static/roadzen.js"></script>
+</body>
+</html>

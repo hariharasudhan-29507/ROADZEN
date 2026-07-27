@@ -3,212 +3,163 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>RoadZen — AI Traffic Safety Platform</title>
-  <meta name="description" content="AI-powered traffic safety platform with risk prediction, heatmap monitoring, and trauma center alerts">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
-  <link rel="stylesheet" href="style.css"/>
+  <title>RoadZen | Road Safety Intelligence</title>
+  <meta name="description" content="RoadZen helps people understand road risk through clearer guidance, heatmaps, dashboards, and prediction tools.">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/driver.js@1.3.6/dist/driver.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@iconoir/css@7.11.0/css/iconoir.css">
+  <link rel="stylesheet" href="/static/roadzen.css">
 </head>
-<body>
-  <!-- NAVBAR -->
-  <nav class="navbar">
-    <div class="nav-brand">
-      <span class="nav-icon">🛡️</span>
-      <span class="nav-title">RoadZen</span>
-      <span class="nav-badge">AI</span>
-    </div>
-    <div class="nav-links">
-      <a href="#predict-section" class="nav-link active">Predict</a>
-      <a href="#map-section" class="nav-link">Heatmap</a>
-      <a href="#charts-section" class="nav-link">Analytics</a>
-      <a href="#chat-section" class="nav-link">AI Chat</a>
-    </div>
-    <div class="nav-status">
-      <span class="status-dot"></span> System Online
-    </div>
-  </nav>
+<body data-page="home" data-theme="light">
+  <div class="shell">
+    <div class="noise"></div>
 
-  <!-- HERO -->
-  <header class="hero" id="hero">
-    <div class="hero-bg"></div>
-    <div class="hero-content">
-      <h1 class="hero-title">
-        <span class="hero-accent">AI-Powered</span> Road Safety Intelligence
-      </h1>
-      <p class="hero-subtitle">Real-time accident risk prediction, explainable AI insights, heatmap monitoring & trauma center alerts — powered by XGBoost + SHAP</p>
-      <div class="hero-stats">
-        <div class="stat-card"><span class="stat-num" id="stat-accuracy">--</span><span class="stat-label">Model Accuracy</span></div>
-        <div class="stat-card"><span class="stat-num" id="stat-samples">--</span><span class="stat-label">Training Samples</span></div>
-        <div class="stat-card"><span class="stat-num">10</span><span class="stat-label">Trauma Centers</span></div>
-        <div class="stat-card"><span class="stat-num">24/7</span><span class="stat-label">Monitoring</span></div>
+    <nav class="nav">
+      <div class="nav-inner">
+        <a class="brand" href="/">
+          <span class="brand-mark">RZ</span>
+          <span class="brand-copy">RoadZen<br><small>India Road Intelligence</small></span>
+        </a>
+        <div class="nav-links">
+          <a class="nav-link active" href="/">Home</a>
+          <a class="nav-link" href="/heatmap">Heatmap</a>
+          <a class="nav-link" href="/dashboard">Dashboard</a>
+          <a class="nav-link" href="/predict">Predict</a>
+          <a class="nav-link" href="/chatbot">Chatbot</a>
+        </div>
+        <button class="theme-toggle" type="button" data-theme-toggle>Light mode</button>
       </div>
-    </div>
-    <div class="scroll-indicator">↓ Explore</div>
-  </header>
+    </nav>
 
-  <!-- PREDICTION SECTION -->
-  <section class="section" id="predict-section">
-    <h2 class="section-title"><span class="title-icon">🎯</span> Risk Prediction Engine</h2>
-    <p class="section-desc">Enter driving parameters to predict accident severity using our trained XGBoost model</p>
-    <div class="predict-grid">
-      <div class="card predict-card">
-        <h3 class="card-title">Input Parameters</h3>
-        <div class="form-grid">
-          <div class="form-group">
-            <label>Hour (0-23)</label>
-            <input type="number" id="inp-hour" min="0" max="23" value="14" class="form-input">
+    <header class="hero">
+      <div class="section-inner hero-grid">
+        <div class="hero-copy">
+          <div class="eyebrow reveal-text">RoadZen</div>
+          <h1 class="landing-display reveal-text">Move through the road with clearer judgment.</h1>
+          <p class="reveal-text">RoadZen helps people understand risk, ask for guidance, and make calmer driving decisions through a cleaner, more focused experience.</p>
+          <div class="hero-actions">
+            <a class="button button-primary" href="/chatbot">Talk to RoadZen</a>
+            <a class="button button-secondary" href="/predict">Run prediction</a>
           </div>
-          <div class="form-group">
-            <label>Driver Age</label>
-            <input type="number" id="inp-age" min="18" max="80" value="30" class="form-input">
-          </div>
-          <div class="form-group">
-            <label>Engine Size (cc)</label>
-            <input type="number" id="inp-engine" min="500" max="5000" value="1500" class="form-input">
-          </div>
-          <div class="form-group">
-            <label>Car Age (years)</label>
-            <input type="number" id="inp-carage" min="0" max="30" value="5" class="form-input">
-          </div>
-          <div class="form-group">
-            <label>Weather</label>
-            <select id="inp-weather" class="form-input">
-              <option value="Clear">☀️ Clear</option>
-              <option value="Rain">🌧️ Rain</option>
-              <option value="Fog" selected>🌫️ Fog</option>
-              <option value="Snow">❄️ Snow</option>
-              <option value="Storm">⛈️ Storm</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label>Light Condition</label>
-            <select id="inp-lum" class="form-input">
-              <option value="Daylight">🌞 Daylight</option>
-              <option value="Twilight">🌅 Twilight</option>
-              <option value="Night" selected>🌙 Night</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label>Vehicle Type</label>
-            <select id="inp-vehicle" class="form-input">
-              <option value="Car" selected>🚗 Car</option>
-              <option value="Motorcycle">🏍️ Motorcycle</option>
-              <option value="Truck">🚛 Truck</option>
-              <option value="Bus">🚌 Bus</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label>Driver Gender</label>
-            <select id="inp-sex" class="form-input">
-              <option value="M">♂️ Male</option>
-              <option value="F">♀️ Female</option>
-            </select>
+          <div class="pill-row" style="margin-top:18px">
+            <span class="model-chip">Clean guidance</span>
+            <span class="model-chip">Skeleton-first loading</span>
+            <span class="model-chip">Light and dark themes</span>
           </div>
         </div>
-        <div class="btn-row">
-          <button class="btn btn-primary" onclick="predictRisk()">⚡ Predict Risk</button>
-          <button class="btn btn-secondary" onclick="explainRisk()">🔍 Explain (SHAP)</button>
-          <button class="btn btn-danger" onclick="sendAlert()">🚨 Send Alert</button>
-        </div>
-      </div>
-      <div class="card result-card" id="result-card">
-        <h3 class="card-title">Prediction Result</h3>
-        <div class="result-placeholder" id="result-placeholder">
-          <span class="result-icon">🔮</span>
-          <p>Enter parameters and click <strong>Predict Risk</strong> to see results</p>
-        </div>
-        <div class="result-content" id="result-content" style="display:none;">
-          <div class="risk-gauge" id="risk-gauge">
-            <div class="gauge-ring" id="gauge-ring"></div>
-            <div class="gauge-center">
-              <span class="gauge-label" id="gauge-label">--</span>
-              <span class="gauge-conf" id="gauge-conf">--% confidence</span>
+
+        <div class="hero-visual">
+          <div class="orb orb-a" data-parallax="0.06"></div>
+          <div class="orb orb-b" data-parallax="-0.04"></div>
+          <div class="hero-stack">
+            <div class="hero-board">
+              <div class="hero-card">
+                <span class="meta-label">Road overview</span>
+                <strong id="hero-samples">Loading...</strong>
+                <span>Road signals gathered into one view.</span>
+              </div>
+              <div class="hero-callout">
+                <div class="hero-card">
+                  <span class="meta-label">Prediction quality</span>
+                  <strong id="hero-accuracy">Loading...</strong>
+                  <span>Confidence for scenario-based risk checks.</span>
+                </div>
+                <div class="hero-card">
+                  <span class="meta-label">RoadZen chat</span>
+                  <strong>Ready</strong>
+                  <span>Ask simple questions or detailed driving concerns.</span>
+                </div>
+              </div>
             </div>
-          </div>
-          <div class="prob-bars" id="prob-bars"></div>
-        </div>
-        <div class="explain-content" id="explain-content" style="display:none;">
-          <h4>🔍 SHAP Explanation</h4>
-          <div id="shap-factors"></div>
-        </div>
-        <div class="alert-content" id="alert-content" style="display:none;">
-          <h4>🚨 Emergency Alert Status</h4>
-          <div id="alert-info"></div>
-        </div>
-      </div>
-    </div>
-  </section>
 
-  <!-- MAP SECTION -->
-  <section class="section section-dark" id="map-section">
-    <h2 class="section-title"><span class="title-icon">🗺️</span> Accident Heatmap & Trauma Centers</h2>
-    <p class="section-desc">Real-time visualization of accident hotspots with nearest trauma center locations</p>
-    <div class="map-controls">
-      <button class="btn btn-sm" onclick="toggleHeatmap()">🔥 Toggle Heatmap</button>
-      <button class="btn btn-sm" onclick="toggleHospitals()">🏥 Toggle Hospitals</button>
-      <button class="btn btn-sm" onclick="resetMap()">🔄 Reset View</button>
-    </div>
-    <div id="map"></div>
-    <div class="map-legend">
-      <div class="legend-item"><span class="legend-dot" style="background:#ff0000"></span> High Risk Zone</div>
-      <div class="legend-item"><span class="legend-dot" style="background:#ff8800"></span> Medium Risk</div>
-      <div class="legend-item"><span class="legend-dot" style="background:#00cc66"></span> Low Risk</div>
-      <div class="legend-item"><span class="legend-dot" style="background:#0099ff"></span> Trauma Center</div>
-    </div>
-  </section>
-
-  <!-- CHARTS SECTION -->
-  <section class="section" id="charts-section">
-    <h2 class="section-title"><span class="title-icon">📊</span> Risk Analytics Dashboard</h2>
-    <p class="section-desc">Comprehensive data-driven insights from thousands of accident records</p>
-    <div class="charts-grid">
-      <div class="card chart-card"><h3 class="card-title">⏰ Hourly Risk Distribution</h3><canvas id="chart-hourly"></canvas></div>
-      <div class="card chart-card"><h3 class="card-title">🌦️ Weather Impact Analysis</h3><canvas id="chart-weather"></canvas></div>
-      <div class="card chart-card"><h3 class="card-title">🚗 Vehicle Type Risk</h3><canvas id="chart-vehicle"></canvas></div>
-      <div class="card chart-card"><h3 class="card-title">🧬 Feature Importance (XGBoost)</h3><canvas id="chart-importance"></canvas></div>
-      <div class="card chart-card"><h3 class="card-title">📅 Day of Week Analysis</h3><canvas id="chart-day"></canvas></div>
-      <div class="card chart-card"><h3 class="card-title">🧑 Casualty Type Distribution</h3><canvas id="chart-casualty"></canvas></div>
-    </div>
-  </section>
-
-  <!-- CHATBOT SECTION -->
-  <section class="section section-dark" id="chat-section">
-    <h2 class="section-title"><span class="title-icon">🤖</span> AI Safety Assistant</h2>
-    <p class="section-desc">Ask anything about road safety, risk factors, emergency services, or driving advice</p>
-    <div class="chat-container">
-      <div class="chat-messages" id="chat-messages">
-        <div class="chat-msg bot-msg">
-          <div class="msg-avatar">🤖</div>
-          <div class="msg-bubble">
-            <p>👋 <strong>Welcome to RoadZen AI!</strong></p>
-            <p>I'm your intelligent traffic safety assistant. Ask me about risk prediction, accident causes, nearby hospitals, or safety tips!</p>
-            <div class="msg-suggestions" id="initial-suggestions">
-              <button class="suggestion-btn" onclick="quickChat('Predict my risk')">🎯 Predict Risk</button>
-              <button class="suggestion-btn" onclick="quickChat('Show heatmap')">🗺️ Heatmap</button>
-              <button class="suggestion-btn" onclick="quickChat('Find hospital')">🏥 Hospital</button>
-              <button class="suggestion-btn" onclick="quickChat('Safety tips')">🛡️ Tips</button>
+            <div class="hero-scan">
+              <div class="scan-bar"></div>
+              <div class="scan-bar"></div>
+              <div class="scan-bar"></div>
             </div>
           </div>
         </div>
       </div>
-      <div class="chat-input-row">
-        <input type="text" id="chat-input" class="chat-input" placeholder="Ask about road safety, risk factors, hospitals..." onkeydown="if(event.key==='Enter')sendChat()">
-        <button class="btn btn-primary chat-send" onclick="sendChat()">Send ⚡</button>
+    </header>
+
+    <section class="section section-tight">
+      <div class="section-inner section-header">
+        <div>
+          <div class="eyebrow reveal-text">Why it feels different</div>
+          <div class="section-title reveal-text">Built to feel calm, precise, and easy to trust.</div>
+        </div>
+        <div class="section-copy reveal-text">Every section has a single job: orient, explain, or guide action. The page stays light on noise so the message lands faster.</div>
       </div>
-    </div>
-  </section>
 
-  <!-- FOOTER -->
-  <footer class="footer">
-    <p>🛡️ <strong>RoadZen</strong> — AI-Powered Traffic Safety Intelligence Platform</p>
-    <p class="footer-sub">Built with XGBoost · SHAP · FastAPI · Leaflet.js · Chart.js | Emergency: 📞 112</p>
-  </footer>
+      <div class="section-inner support-grid">
+        <div class="panel support-panel">
+          <h3>RoadZen chat</h3>
+          <p>Ask naturally and get a clear answer that stays focused on the question instead of overwhelming you.</p>
+        </div>
+        <div class="panel support-panel">
+          <h3>Heatmap exploration</h3>
+          <p>See where pressure builds on the road and where emergency support is closest when things go wrong.</p>
+        </div>
+        <div class="panel support-panel">
+          <h3>Guided prediction</h3>
+          <p>Run a trip scenario, understand what increases risk, and decide what to change before you leave.</p>
+        </div>
+      </div>
+    </section>
 
-  <!-- SCRIPTS -->
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-  <script src="https://unpkg.com/leaflet.heat@0.2.0/dist/leaflet-heat.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-  <script src="app.js"></script>
+    <section class="section parallax-band">
+      <div class="parallax-media" data-parallax="0.14"></div>
+      <div class="section-inner story-grid">
+        <div class="story-shell glass">
+          <div class="eyebrow reveal-text">Road pressure zones</div>
+          <div class="story-stack" id="home-skeleton">
+            <div class="skeleton-line long"></div>
+            <div class="skeleton-block"></div>
+            <div class="skeleton-block"></div>
+          </div>
+          <div class="story-stack is-hidden" id="home-live">
+            <div id="state-preview"></div>
+          </div>
+          <div class="small-copy is-hidden" id="home-error" style="margin-top:14px"></div>
+        </div>
+
+        <div>
+          <div class="eyebrow reveal-text">What shifts the road fastest</div>
+          <div class="section-title reveal-text" style="font-size:clamp(2rem,4vw,3.6rem)">The right answer changes with state, hour, and weather.</div>
+          <div class="section-copy reveal-text">RoadZen helps people read those shifts quickly, so the next choice feels informed instead of reactive.</div>
+          <div class="story-shell glass" style="margin-top:22px">
+            <div id="incident-preview"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-tight">
+      <div class="section-inner final-cta glass">
+        <div class="eyebrow reveal-text">Start anywhere</div>
+        <div class="section-title reveal-text" style="font-size:clamp(2rem,4vw,3.4rem); max-width:none">Open the part of RoadZen that fits the moment.</div>
+        <div class="button-row" style="justify-content:center; margin-top:18px">
+          <a class="button button-primary" href="/chatbot">Open RoadZen Chat</a>
+          <a class="button button-ghost" href="/heatmap">Open Heatmap</a>
+          <a class="button button-ghost" href="/dashboard">Open Dashboard</a>
+          <a class="button button-ghost" href="/predict">Open Predictor</a>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        <div>RoadZen is designed for calm road guidance.</div>
+        <div>Ask, scan, predict, and move with more confidence.</div>
+      </div>
+    </footer>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.2/lib/anime.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/driver.js@1.3.6/dist/driver.js.iife.js"></script>
+  <script src="/static/supabase-client.js"></script>
+  <script src="/static/roadzen.js"></script>
 </body>
 </html>
