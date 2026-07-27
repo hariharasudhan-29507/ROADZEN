@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RoadZen Analytics Hub</title>
+  <meta name="description" content="Explore RoadZen analytics through dedicated, professional dashboard views.">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/driver.js@1.3.6/dist/driver.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@iconoir/css@7.11.0/css/iconoir.css">
+  <link rel="stylesheet" href="/static/roadzen.css">
+</head>
+<body data-page="dashboard" data-theme="light">
+  <div class="shell">
+    <div class="noise"></div>
+    <nav class="nav"></nav>
+
+    <section class="page-hero">
+      <div class="page-frame">
+        <div class="eyebrow reveal-text">Analytics hub</div>
+        <div class="page-title reveal-text">A sharper dashboard that opens into focused graph workspaces.</div>
+        <div class="page-copy reveal-text">Use this page as the command center, then move into dedicated analytics screens for state pressure, weather risk, vehicle mix, hourly severity, model impact, and casualty distribution.</div>
+      </div>
+    </section>
+
+    <section class="section section-tight">
+      <div class="page-frame stats-grid" style="margin-bottom: 26px;">
+        <div class="metric-block">
+          <div class="metric-label">Top state cluster</div>
+          <div class="metric-value" id="dash-top-state">...</div>
+          <div class="small-copy" id="dash-top-state-copy">Loading state trend</div>
+        </div>
+        <div class="metric-block">
+          <div class="metric-label">Highest weather severity</div>
+          <div class="metric-value" id="dash-top-weather">...</div>
+          <div class="small-copy" id="dash-top-weather-copy">Loading weather signal</div>
+        </div>
+        <div class="metric-block">
+          <div class="metric-label">Most exposed vehicle</div>
+          <div class="metric-value" id="dash-top-vehicle">...</div>
+          <div class="small-copy" id="dash-top-vehicle-copy">Loading vehicle mix</div>
+        </div>
+        <div class="metric-block">
+          <div class="metric-label">Critical hour</div>
+          <div class="metric-value" id="dash-top-hour">...</div>
+          <div class="small-copy" id="dash-top-hour-copy">Loading hourly pressure</div>
+        </div>
+      </div>
+
+      <div class="page-frame overview-grid">
+        <div class="analytics-board">
+          <div id="dashboard-skeleton">
+            <div class="analytics-grid">
+              <div class="skeleton-block"></div>
+              <div class="skeleton-block"></div>
+              <div class="skeleton-block"></div>
+              <div class="skeleton-block"></div>
+              <div class="skeleton-block"></div>
+              <div class="skeleton-block"></div>
+            </div>
+          </div>
+
+          <div class="is-hidden" id="dashboard-live">
+            <div class="insight-banner">
+              <div class="eyebrow">Decision flow</div>
+              <div class="analytics-title" style="margin: 8px 0 10px;">Pick the view that matches the question.</div>
+              <div class="page-copy">Each card below opens a dedicated chart page with a library selected for that dataset, so the visuals stay readable instead of forcing everything into one crowded dashboard.</div>
+            </div>
+
+            <div class="analytics-grid" id="dashboard-analytics-grid"></div>
+          </div>
+        </div>
+
+        <aside class="analytics-board">
+          <div class="section-kpi">
+            <div class="eyebrow">Best next action</div>
+            <strong id="dash-guidance-title">Loading operational cue</strong>
+            <div class="small-copy" id="dash-guidance-copy">Connecting the dashboard insights.</div>
+          </div>
+
+          <div class="overview-cards">
+            <div class="quick-stat">
+              <div class="metric-label">State records</div>
+              <strong id="dash-state-count">...</strong>
+              <div class="small-copy">Tracked regional summaries</div>
+            </div>
+            <div class="quick-stat">
+              <div class="metric-label">Weather classes</div>
+              <strong id="dash-weather-count">...</strong>
+              <div class="small-copy">Severity conditions mapped</div>
+            </div>
+            <div class="quick-stat">
+              <div class="metric-label">Vehicle groups</div>
+              <strong id="dash-vehicle-count">...</strong>
+              <div class="small-copy">Transport categories compared</div>
+            </div>
+            <div class="quick-stat">
+              <div class="metric-label">Hour windows</div>
+              <strong id="dash-hour-count">...</strong>
+              <div class="small-copy">Time slices monitored</div>
+            </div>
+          </div>
+
+          <div class="analytics-board">
+            <div class="analytics-title">Connected actions</div>
+            <div class="action-grid">
+              <a class="action-card" href="/heatmap">
+                <div class="eyebrow">Map context</div>
+                <strong>Open hotspot map</strong>
+                <div class="small-copy">Check whether the highest-risk areas cluster geographically.</div>
+              </a>
+              <a class="action-card" href="/predict">
+                <div class="eyebrow">Scenario mode</div>
+                <strong>Run a prediction</strong>
+                <div class="small-copy">Move from system trends into a specific trip scenario.</div>
+              </a>
+              <a class="action-card" href="/chatbot">
+                <div class="eyebrow">Narrative layer</div>
+                <strong>Ask RoadZen chat</strong>
+                <div class="small-copy">Turn the data signal into a plain-language explanation.</div>
+              </a>
+            </div>
+          </div>
+        </aside>
+      </div>
+
+      <div class="page-frame analytics-board" style="margin-top: 28px;">
+        <div class="analytics-title">Recent incident pulse</div>
+        <div class="incident-grid" id="dashboard-incidents"></div>
+      </div>
+
+      <div class="page-frame small-copy is-hidden" id="dashboard-error" style="margin-top: 16px;"></div>
+    </section>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        <div>Use this hub when you want a confident overview before drilling into one graph at a time.</div>
+        <div>Every analytics page keeps light and dark variants aligned, with dedicated visuals for each dataset.</div>
+      </div>
+    </footer>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.2/lib/anime.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/driver.js@1.3.6/dist/driver.js.iife.js"></script>
+  <script src="/static/supabase-client.js"></script>
+  <script src="/static/roadzen.js"></script>
+</body>
+</html>

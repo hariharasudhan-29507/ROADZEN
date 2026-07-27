@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RoadZen Chatbot</title>
+  <meta name="description" content="Talk with RoadZen for calm, clear road guidance.">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/driver.js@1.3.6/dist/driver.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@iconoir/css@7.11.0/css/iconoir.css">
+  <link rel="stylesheet" href="/static/roadzen.css">
+</head>
+<body data-page="chatbot" data-theme="light">
+  <div class="shell">
+    <div class="noise"></div>
+    <nav class="nav"></nav>
+
+    <section class="page-hero">
+      <div class="page-frame">
+        <div class="eyebrow reveal-text">RoadZen chat</div>
+        <div class="page-title reveal-text">Ask simply. Ask deeply. RoadZen adapts.</div>
+        <div class="page-copy reveal-text">Fast turns route through Phi, deeper reasoning routes through Mistral, and replies stream live instead of waiting for one final block.</div>
+      </div>
+    </section>
+
+    <section class="section section-tight">
+      <div class="page-frame chat-layout">
+        <aside class="chat-side glass" data-location-widget>
+          <div class="eyebrow">Quick prompts</div>
+          <div class="story-line">
+            <div>
+              <strong>Quick hello</strong>
+              <div class="small-copy">Short replies for simple starts.</div>
+            </div>
+            <div class="risk-chip">Fast</div>
+          </div>
+          <div class="story-line">
+            <div>
+              <strong>Deeper help</strong>
+              <div class="small-copy">Structured answers for comparisons and reasoning.</div>
+            </div>
+            <div class="risk-chip">Detailed</div>
+          </div>
+          <div class="info-card">
+            <div class="eyebrow">Your context</div>
+            <strong data-location-name>Waiting for permission</strong>
+            <div class="small-copy"><span data-location-temp>--</span> · <span data-location-weather>Weather unavailable</span></div>
+            <div class="small-copy" data-location-time>Time unavailable</div>
+          </div>
+          <div class="small-copy" style="margin-top:18px">Try: compare two states, explain a weather condition, ask about vehicle risk, or ask for the answer in simple language.</div>
+          <div id="chat-suggestions" class="button-row" style="margin-top:18px">
+            <button class="button button-ghost" data-chat-q="Which state has the most accidents and why?">Top accident state</button>
+            <button class="button button-ghost" data-chat-q="Explain fog risk in simple words">Explain fog risk</button>
+            <button class="button button-ghost" data-chat-q="How risky are two wheelers?">Two wheeler risk</button>
+          </div>
+        </aside>
+
+        <div class="chat-shell">
+          <div id="chat-feed" class="chat-feed">
+            <div class="chat-row bot">
+              <div class="chat-avatar">RZ</div>
+              <div class="chat-bubble bot-bubble">
+                <div class="chat-body"><strong>RoadZen is ready.</strong><br>Ask about accident hotspots, state risk, weather conditions, vehicle safety, recent incidents, or trip guidance.</div>
+                <div class="chat-meta">
+                  <span class="mini-pill">Streaming</span>
+                  <span class="mini-pill">Short for simple prompts</span>
+                  <span class="mini-pill">Structured for deep prompts</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="chat-composer">
+            <input id="chat-input" class="chat-input" type="text" placeholder="Ask RoadZen anything about the road...">
+            <button id="chat-send" class="button button-primary">Send to RoadZen</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        <div>RoadZen keeps answers calm and clear.</div>
+        <div>Simple questions stay light. Bigger questions stream in live.</div>
+      </div>
+    </footer>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.2/lib/anime.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/driver.js@1.3.6/dist/driver.js.iife.js"></script>
+  <script src="/static/supabase-client.js"></script>
+  <script src="/static/roadzen.js"></script>
+</body>
+</html>
