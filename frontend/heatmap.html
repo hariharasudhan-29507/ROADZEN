@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RoadZen Heatmap — Live Traffic Intelligence</title>
+  <meta name="description" content="Explore RoadZen accident hotspots, trauma center overlays, and real-time traffic intelligence across India.">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/driver.js@1.3.6/dist/driver.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@iconoir/css@7.11.0/css/iconoir.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css">
+  <link rel="stylesheet" href="/static/roadzen.css">
+  <link rel="stylesheet" href="/static/heatmap.css">
+</head>
+<body data-page="heatmap" data-theme="light">
+  <div class="shell">
+    <div class="noise"></div>
+    <nav class="nav"></nav>
+
+    <section class="page-hero">
+      <div class="page-frame">
+        <div class="eyebrow reveal-text">Map view</div>
+        <div class="page-title reveal-text">See where the pressure builds.</div>
+        <div class="page-copy reveal-text">OpenStreetMap powers the base layer with 7 map themes including satellite and terrain. Click-to-pin lets you inspect any route, current location tracking keeps you oriented, and the distance tool helps compare two points instantly.</div>
+      </div>
+    </section>
+
+    <section class="section section-tight">
+      <div class="page-frame heatmap-grid">
+        <aside class="map-sidebar glass" data-location-widget>
+          <!-- Search / Geocoding -->
+          <div class="sidebar-search">
+            <div class="eyebrow">Search location</div>
+            <div class="search-input-wrap">
+              <input type="text" id="location-search" class="search-input" placeholder="Search any place..." autocomplete="off">
+              <button class="search-btn" id="search-btn" type="button" aria-label="Search">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+              </button>
+            </div>
+            <div id="search-results" class="search-results"></div>
+          </div>
+
+          <!-- Coverage stats -->
+          <div class="eyebrow" style="margin-top:18px">Coverage</div>
+          <div class="story-line">
+            <div>
+              <strong id="heat-count">...</strong>
+              <div class="small-copy">Heatmap points</div>
+            </div>
+            <div class="risk-chip">Density</div>
+          </div>
+          <div class="story-line">
+            <div>
+              <strong id="center-count">...</strong>
+              <div class="small-copy">Trauma centers</div>
+            </div>
+            <div class="risk-chip">Medical</div>
+          </div>
+          <div class="story-line">
+            <div>
+              <strong id="marker-count">0</strong>
+              <div class="small-copy">Your markers</div>
+            </div>
+            <div class="risk-chip">Pins</div>
+          </div>
+
+          <!-- Location info -->
+          <div class="info-card">
+            <div class="eyebrow">Your location</div>
+            <strong data-location-name>Waiting for permission</strong>
+            <div class="small-copy"><span data-location-temp>--</span> · <span data-location-weather>Weather unavailable</span></div>
+            <div class="small-copy" data-location-time>Time unavailable</div>
+            <button class="locate-btn" id="locate-me" type="button">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v4m0 12v4M2 12h4m12 0h4"/></svg>
+              Locate me
+            </button>
+          </div>
+
+          <!-- Distance tool -->
+          <div class="info-card">
+            <div class="eyebrow">Distance tool</div>
+            <strong id="map-distance">Select two points to calculate distance.</strong>
+            <div class="small-copy" id="map-coordinates">Click anywhere on the map to mark a point.</div>
+          </div>
+
+          <!-- Incident Report -->
+          <div class="info-card">
+            <div class="eyebrow">Submit zone report</div>
+            <form class="incident-form" id="zone-report-form" novalidate>
+              <input id="report-title" class="incident-input" type="text" maxlength="90" placeholder="Short report title" required>
+              <textarea id="report-description" class="incident-input incident-textarea" maxlength="900" placeholder="Describe the accident-prone zone, road condition, or recurring issue." required></textarea>
+              <select id="incident-type" class="incident-select">
+                <option value="accident">Accident</option>
+                <option value="congestion">Congestion</option>
+                <option value="roadwork">Roadwork</option>
+                <option value="hazard">Hazard</option>
+                <option value="closure">Road Closure</option>
+              </select>
+              <select id="incident-severity" class="incident-select">
+                <option value="low">Low severity</option>
+                <option value="medium">Medium severity</option>
+                <option value="high">High severity</option>
+              </select>
+              <input id="report-photo" class="incident-input" type="file" accept="image/jpeg,image/png,image/webp" multiple>
+              <button class="report-btn" id="report-incident" type="button">Pick location on map</button>
+              <button class="button button-primary" id="submit-zone-report" type="submit">Submit zone report</button>
+              <div class="small-copy" id="report-status">Sign in to submit reports with photos.</div>
+            </form>
+          </div>
+
+          <!-- Density Legend -->
+          <div class="legend-stack">
+            <div class="eyebrow" style="margin-bottom:4px">Severity legend</div>
+            <div class="legend-item"><span class="legend-dot" style="background:#34d399"></span><span>Low intensity (severity 3)</span></div>
+            <div class="legend-item"><span class="legend-dot" style="background:#fbbf24"></span><span>Moderate (severity 2)</span></div>
+            <div class="legend-item"><span class="legend-dot" style="background:#f97316"></span><span>Elevated (severity 1–2)</span></div>
+            <div class="legend-item"><span class="legend-dot" style="background:#ef4444"></span><span>Critical hotspot (severity 1)</span></div>
+            <div class="legend-item"><span class="legend-dot" style="background:#dc2626"></span><span>Extreme cluster</span></div>
+            <div class="legend-item"><span class="legend-dot" style="background:white;border:2px solid #334155"></span><span>Trauma center</span></div>
+            <div class="legend-item"><span class="legend-dot" style="background:#3b82f6"></span><span>Your location</span></div>
+          </div>
+        </aside>
+
+        <div>
+          <div id="heatmap-skeleton">
+            <div class="skeleton-block" style="height:720px"></div>
+          </div>
+          <div id="heatmap-live" class="map-panel is-hidden">
+            <!-- Layer toggles -->
+            <div class="map-toolbar">
+              <button class="map-chip active" data-map-toggle="heat" title="Toggle heatmap layer">🔥 Heatmap</button>
+              <button class="map-chip active" data-map-toggle="markers" title="Toggle severity markers">📍 Markers</button>
+              <button class="map-chip active" data-map-toggle="trauma" title="Toggle trauma centers">🏥 Trauma</button>
+              <button class="map-chip" data-map-toggle="cluster" title="Toggle marker clustering">🔗 Cluster</button>
+              <button class="map-chip" data-map-toggle="reset" title="Clear all pins">🗑 Reset</button>
+            </div>
+
+            <!-- Theme switcher -->
+            <div class="theme-switcher">
+              <button class="map-chip active" data-map-theme="dark" title="Dark mode">🌙 Dark</button>
+              <button class="map-chip" data-map-theme="light" title="Light / Streets">🗺 Streets</button>
+              <button class="map-chip" data-map-theme="satellite" title="Satellite imagery">🛰 Satellite</button>
+              <button class="map-chip" data-map-theme="terrain" title="Topographic terrain">⛰ Terrain</button>
+              <button class="map-chip" data-map-theme="watercolor" title="Artistic watercolor">🎨 Watercolor</button>
+              <button class="map-chip" data-map-theme="toner" title="High contrast toner">🖨 Toner</button>
+              <button class="map-chip" data-map-theme="humanitarian" title="Humanitarian OSM">❤️ Humanitarian</button>
+            </div>
+
+            <!-- Map container -->
+            <div id="map"></div>
+
+            <!-- Map overlays -->
+            <div class="map-overlay">
+              <div class="detail-card">
+                <div class="eyebrow">Interaction</div>
+                <strong>Click to pin locations</strong>
+                <div class="small-copy">Pins persist until reset. The last two pins drive the distance calculator. Right-click to drop a labeled marker.</div>
+              </div>
+              <div class="location-card" data-location-widget>
+                <div class="eyebrow">Live weather</div>
+                <strong data-location-name>Waiting for location</strong>
+                <div class="small-copy"><span data-location-temp>--</span> · <span data-location-weather>Weather unavailable</span></div>
+                <div class="small-copy" data-location-time>Time unavailable</div>
+              </div>
+            </div>
+
+            <!-- Zoom info bar -->
+            <div class="zoom-info" id="zoom-info">Zoom: 5 · Points visible: ...</div>
+          </div>
+          <div class="small-copy is-hidden" id="heatmap-error" style="margin-top:16px"></div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        <div>Use the dashboard to compare what you see here.</div>
+        <div>Use RoadZen chat if you want a region explained in plain language.</div>
+      </div>
+    </footer>
+  </div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://unpkg.com/leaflet.heat/dist/leaflet-heat.js"></script>
+  <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.2/lib/anime.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/driver.js@1.3.6/dist/driver.js.iife.js"></script>
+  <script src="/static/supabase-client.js"></script>
+  <script src="/static/roadzen.js"></script>
+  <script src="/static/heatmap-engine.js"></script>
+</body>
+</html>
